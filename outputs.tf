@@ -49,7 +49,7 @@ spec:
           args:
             - --ingress-class=alb
             - --cluster-name=${var.eks_cluster_name}
-            - --aws-vpc-id=${data.aws_vpc.base-app.id}
+            - --aws-vpc-id=${data.aws_vpc.base-app-vpc.id}
             - --aws-region=${var.aws_region}
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.4
       serviceAccountName: alb-ingress-controller

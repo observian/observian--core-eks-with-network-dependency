@@ -1,10 +1,14 @@
-variable "eks_clsuter_name" {
+variable "eks_cluster_name" {
 }
 
 variable "application" {
 }
 
 variable "env" {
+}
+
+variable "aws_region" {
+    
 }
 
 variable "namespace" {
@@ -20,4 +24,7 @@ variable "k8s-user-names" {
     "user3"
   ]
 
+}
+
+variable "allowed_account_ids" {
 }

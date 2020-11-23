@@ -8,12 +8,19 @@ resource "aws_eks_cluster" "base-cluster" {
     , data.aws_subnet.base-app-private-bravo.id]
     endpoint_private_access = true
     endpoint_public_access  = true
-    security_group_ids      = [aws_security_group.eks-security-group.id]
+    security_group_ids      = [data.aws_security_group.eks-security-group.id]
   }
 
   enabled_cluster_log_types = ["api", "audit", "controllerManager", "scheduler"]
 
   depends_on = [aws_iam_role_policy_attachment.test-AmazonEKSClusterPolicy]
+}
+
+data "aws_security_group" "eks-security-group" {
+    filter {
+        name = "tag:Name"
+        values = ["terraform-eks-demo"]
+    }
 }
 
 resource "aws_eks_node_group" "eks-node-group" {
