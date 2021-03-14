@@ -382,7 +382,7 @@ resource "aws_iam_group_membership" "eks-admin-team-membership" {
 resource "aws_iam_openid_connect_provider" "example" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = []
-  url             = aws_eks_cluster.base-cluster.identity.0.oidc.0.issuer
+  url             = data.aws_eks_cluster.base-cluster.identity.0.oidc.0.issuer
 }
 
 resource "aws_iam_role" "ssm-reader" {
