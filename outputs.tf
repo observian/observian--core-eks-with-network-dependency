@@ -21,10 +21,6 @@ data:
       username: ${aws_iam_user.k8s-users[1].name}
       groups:
         - system:masters
-    - userarn: ${aws_iam_user.k8s-users[2].arn}
-      username: ${aws_iam_user.k8s-users[2].name}
-      groups:
-        - system:masters
 ---
 apiVersion: apps/v1
 kind: Deployment
