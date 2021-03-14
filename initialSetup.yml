@@ -11,16 +11,12 @@ data:
         - system:bootstrappers
         - system:nodes
   mapUsers: |
-    - userarn: arn:aws:iam::592516922976:user/observian_dan
-      username: observian_dan
+    - userarn: arn:aws:iam::592516922976:user/kylek8s
+      username: kylek8s
       groups:
         - system:masters
-    - userarn: arn:aws:iam::592516922976:user/user2
-      username: user2
-      groups:
-        - system:masters
-    - userarn: arn:aws:iam::592516922976:user/user3
-      username: user3
+    - userarn: arn:aws:iam::592516922976:user/adank8s
+      username: adank8s
       groups:
         - system:masters
 ---
@@ -472,8 +468,6 @@ metadata:
     app: cluster-autoscaler
 spec:
   replicas: 1
-  nodeSelector:
-    kubernetes.io/lifecycle: normal
   selector:
     matchLabels:
       app: cluster-autoscaler
@@ -513,5 +507,3 @@ spec:
         - name: ssl-certs
           hostPath:
             path: "/etc/ssl/certs/ca-bundle.crt"
-
-

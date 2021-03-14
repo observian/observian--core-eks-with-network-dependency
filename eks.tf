@@ -32,7 +32,8 @@ module "base-cluster" {
       asg_max_size        = 1
       kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=normal"
       suspended_processes = ["AZRebalance"]
-      root_volume_type    = "gp2"
+      root_volume_type    = "gp2",
+      image_id = "ami-0fc3ca5b2c5e1fb11"
     },
     {
       name                = "spot-1"
@@ -41,7 +42,9 @@ module "base-cluster" {
       asg_max_size        = 20
       kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
       suspended_processes = ["AZRebalance"]
-      root_volume_type    = "gp2"
+      root_volume_type    = "gp2",
+      image_id = "ami-0fc3ca5b2c5e1fb11"
+      
     },
     {
       name                = "spot-2"
@@ -50,7 +53,8 @@ module "base-cluster" {
       asg_max_size        = 20
       kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
       suspended_processes = ["AZRebalance"]
-      root_volume_type    = "gp2"
+      root_volume_type    = "gp2",
+      image_id = "ami-0fc3ca5b2c5e1fb11"
     }
   ]
 }
