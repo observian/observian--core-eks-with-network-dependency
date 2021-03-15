@@ -53,6 +53,8 @@ spec:
             - --aws-region=${var.aws_region}
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.4
       serviceAccountName: alb-ingress-controller
+      nodeSelector:
+        node.kubernetes.io/lifecycle: ondemand
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -213,6 +215,8 @@ spec:
         k8s-app: metrics-server
     spec:
       serviceAccountName: metrics-server
+      nodeSelector:
+        node.kubernetes.io/lifecycle: ondemand
       volumes:
       # mount in tmp so we can safely use from-scratch images and/or read-only containers
       - name: tmp-dir
@@ -473,6 +477,7 @@ metadata:
   labels:
     app: cluster-autoscaler
 spec:
+  
   replicas: 1
   selector:
     matchLabels:
@@ -486,6 +491,8 @@ spec:
         prometheus.io/port: '8085'
     spec:
       serviceAccountName: cluster-autoscaler
+      nodeSelector:
+        node.kubernetes.io/lifecycle: ondemand
       containers:
         - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.17.3
           name: cluster-autoscaler
