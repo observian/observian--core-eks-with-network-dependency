@@ -40,7 +40,8 @@ resource "aws_eks_node_group" "eks-node-group" {
   tags = {
     "kubernetes.io/cluster/${var.eks_cluster_name}"     = "owned",
     "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned",
-    "k8s.io/cluster-autoscaler/enabled"                 = "true"
+    "k8s.io/cluster-autoscaler/enabled"                 = "true",
+    propagate_at_launch = true
 
   }
 
@@ -76,7 +77,8 @@ resource "aws_eks_node_group" "spot-eks-node-group" {
   tags = {
     "kubernetes.io/cluster/${var.eks_cluster_name}"     = "owned",
     "k8s.io/cluster-autoscaler/${var.eks_cluster_name}" = "owned",
-    "k8s.io/cluster-autoscaler/enabled"                 = "true"
+    "k8s.io/cluster-autoscaler/enabled"                 = "true",
+    propagate_at_launch = true
 
   }
   instance_types =  [
