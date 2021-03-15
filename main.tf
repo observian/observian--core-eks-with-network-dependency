@@ -1,5 +1,5 @@
 provider "aws" {
-  version             = "~>2.0"
+  version             = "~>3.31"
   region              = var.aws_region
   allowed_account_ids = var.allowed_account_ids
 }
