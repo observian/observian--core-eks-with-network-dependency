@@ -57,7 +57,7 @@ resource "aws_eks_node_group" "eks-node-group" {
 resource "aws_eks_node_group" "spot-eks-node-group" {
   cluster_name    = var.eks_cluster_name
   capacity_type = "SPOT"
-  node_group_name = "eks-node-group"
+  node_group_name = "spot-eks-node-group"
   node_role_arn   = aws_iam_role.eks-node-group-role.arn
   subnet_ids = [
     data.aws_subnet.base-app-private-bravo.id
