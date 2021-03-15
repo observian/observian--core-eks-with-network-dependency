@@ -80,10 +80,10 @@ resource "aws_eks_node_group" "spot-eks-node-group" {
 
   }
   instance_types =  [
-    "m4.large",
-    "m5.large",
-    "m5a.large",
-    "m5n.large"
+    "t3.small",
+    "t3.medium",
+    "t3a.small",
+    "t3a.medium"
   ]
   labels = {
     "lifecycle" = "spot"
