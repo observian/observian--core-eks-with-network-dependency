@@ -82,9 +82,9 @@ resource "aws_eks_node_group" "spot-eks-node-group" {
 
   }
   instance_types =  [
-    "t3.small",
+    "t3.large",
     "t3.medium",
-    "t3a.small",
+    "t3a.large",
     "t3a.medium"
   ]
   labels = {
