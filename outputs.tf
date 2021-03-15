@@ -54,7 +54,7 @@ spec:
           image: docker.io/amazon/aws-alb-ingress-controller:v1.1.4
       serviceAccountName: alb-ingress-controller
       nodeSelector:
-        node.kubernetes.io/lifecycle: ondemand
+        lifecycle: ondemand
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -216,7 +216,7 @@ spec:
     spec:
       serviceAccountName: metrics-server
       nodeSelector:
-        node.kubernetes.io/lifecycle: ondemand
+        lifecycle: ondemand
       volumes:
       # mount in tmp so we can safely use from-scratch images and/or read-only containers
       - name: tmp-dir
@@ -492,7 +492,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       nodeSelector:
-        node.kubernetes.io/lifecycle: ondemand
+        lifecycle: ondemand
       containers:
         - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.17.3
           name: cluster-autoscaler

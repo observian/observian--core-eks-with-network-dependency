@@ -69,9 +69,9 @@ resource "aws_eks_node_group" "spot-eks-node-group" {
   ]
 
   scaling_config {
-    desired_size = 1
+    desired_size = 7
     max_size     = 10
-    min_size     = 1
+    min_size     = 7
   }
   tags = {
     "kubernetes.io/cluster/${var.eks_cluster_name}"     = "owned",
