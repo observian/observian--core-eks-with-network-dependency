@@ -374,7 +374,7 @@ resource "aws_iam_user" "k8s-users" {
 }
 
 resource "aws_iam_group_membership" "eks-admin-team-membership" {
-  name = "tf-testing-group-membership"
+  name  = "tf-testing-group-membership"
   users = aws_iam_user.k8s-users.*.name
   group = aws_iam_group.eks-admins.name
 }
@@ -400,4 +400,130 @@ resource "aws_iam_role" "ssm-reader" {
         }
       ]
   })
+}
+
+resource "aws_iam_role" "basic-pod-role" {
+  name = "basic-pod-role"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          Effect : "Allow",
+          Principal : {
+            "AWS" : aws_iam_role.eks-node-group-role.arn
+          },
+          Action : "sts:AssumeRole"
+        }
+      ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch-writer-attachment" {
+  policy_arn = aws_iam_policy.cloudwatch-writer-policy.arn
+  role       = aws_iam_role.basic-pod-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "ssm-reader-attachment" {
+  policy_arn = aws_iam_policy.ssm-policy.arn
+  role       = aws_iam_role.basic-pod-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch-reader-attachment-for-basic-pod-role" {
+  policy_arn = aws_iam_policy.cloudwatch-read-policy.arn
+  role       = aws_iam_role.basic-pod-role.name
+}
+
+
+resource "aws_iam_role_policy_attachment" "cloudwatch-reader-attachment" {
+  policy_arn = aws_iam_policy.cloudwatch-read-policy.arn
+  role       = aws_iam_role.cloudwatch-reader.name
+}
+
+resource "aws_iam_role" "cloudwatch-reader" {
+  name = "cloudwatch-reader"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          Effect : "Allow",
+          Principal : {
+            "AWS" : aws_iam_role.eks-node-group-role.arn
+          },
+          Action : "sts:AssumeRole"
+        }
+      ]
+  })
+}
+
+resource "aws_iam_policy" "cloudwatch-read-policy" {
+  name = "cloudwatch-read-policy"
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "AllowReadingMetricsFromCloudWatch",
+          "Effect" : "Allow",
+          "Action" : [
+            "cloudwatch:DescribeAlarmsForMetric",
+            "cloudwatch:DescribeAlarmHistory",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:ListMetrics",
+            "cloudwatch:GetMetricStatistics",
+            "cloudwatch:GetMetricData"
+          ],
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "AllowReadingLogsFromCloudWatch",
+          "Effect" : "Allow",
+          "Action" : [
+            "logs:DescribeLogGroups",
+            "logs:GetLogGroupFields",
+            "logs:StartQuery",
+            "logs:StopQuery",
+            "logs:GetQueryResults",
+            "logs:GetLogEvents"
+          ],
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "AllowReadingTagsInstancesRegionsFromEC2",
+          "Effect" : "Allow",
+          "Action" : ["ec2:DescribeTags", "ec2:DescribeInstances", "ec2:DescribeRegions"],
+          "Resource" : "*"
+        },
+        {
+          "Sid" : "AllowReadingResourcesForTags",
+          "Effect" : "Allow",
+          "Action" : "tag:GetResources",
+          "Resource" : "*"
+        }
+      ]
+  })
+}
+
+resource "aws_iam_policy" "cloudwatch-writer-policy" {
+  name = "cloudwatch-writer-policy"
+  policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogGroups"
+          ],
+          "Resource" : [
+            "arn:aws:logs:*:*:*"
+          ]
+        }
+      ]
+    }
+  )
 }
