@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "alb-ingress-controller-iam-policy" {
-  name        = "ALBIngressControllerIAMPolicy"
+  name        = "tf-managed-ALBIngressControllerIAMPolicy"
   path        = "/"
   description = "Ingress controller policy"
   policy = jsonencode({
@@ -123,7 +123,7 @@ resource "aws_iam_policy" "alb-ingress-controller-iam-policy" {
 }
 
 resource "aws_iam_role" "alb-ingress-controller-service-account" {
-  name = "alb-ingress-controller-service-account"
+  name = "tf-managed-alb-ingress-controller-service-account"
   assume_role_policy = jsonencode({
     Statement = [{
       Action = "sts:AssumeRole"
@@ -165,7 +165,7 @@ resource "aws_iam_role_policy_attachment" "alb-service-account-attachment" {
 }
 
 resource "aws_iam_role" "eks-role" {
-  name = "eks-role"
+  name = "tf-managed-eks-role"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -182,7 +182,7 @@ resource "aws_iam_role" "eks-role" {
 
 
 resource "aws_iam_role" "eks-node-group-role" {
-  name = "eks-node-group-role"
+  name = "tf-managed-eks-node-group-role"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -231,7 +231,7 @@ resource "aws_iam_role_policy_attachment" "ssm-reader-for-pods-attachment" {
 }
 
 resource "aws_iam_policy" "ecr-policy" {
-  name        = "ecr-policy"
+  name        = "tf-managed-ecr-policy"
   path        = "/"
   description = "role to allow EKS to access ECR"
   policy = jsonencode({
@@ -252,7 +252,7 @@ resource "aws_iam_policy" "ecr-policy" {
 }
 
 resource "aws_iam_policy" "ssm-policy" {
-  name        = "ssm-policy"
+  name        = "tf-managed-ssm-policy"
   path        = "/"
   description = "role to allow EKS to access ECR"
   policy = jsonencode({
@@ -282,7 +282,7 @@ resource "aws_iam_policy" "ssm-policy" {
 }
 
 resource "aws_iam_policy" "eks-autoscaling-policy" {
-  name = "eks-autoscale-policy"
+  name = "tf-managed-eks-autoscale-policy"
   path = "/"
   policy = jsonencode(
     {
@@ -305,7 +305,7 @@ resource "aws_iam_policy" "eks-autoscaling-policy" {
   })
 }
 resource "aws_iam_group_policy" "eks-admin-policy" {
-  name  = "eks-admin-policy"
+  name  = "tf-managed-eks-admin-policy"
   group = aws_iam_group.eks-admins.id
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -322,7 +322,7 @@ resource "aws_iam_group_policy" "eks-admin-policy" {
 }
 
 resource "aws_iam_policy" "eks-assume-role-policy" {
-  name = "eks-assume-role-policy"
+  name = "tf-managed-eks-assume-role-policy"
   policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -337,7 +337,7 @@ resource "aws_iam_policy" "eks-assume-role-policy" {
 }
 
 resource "aws_iam_role" "pod-assume-role" {
-  name = "aws_eks_pod_assume_role"
+  name = "tf-managed-aws_eks_pod_assume_role"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -364,7 +364,7 @@ resource "aws_iam_role" "pod-assume-role" {
 }
 
 resource "aws_iam_group" "eks-admins" {
-  name = "eks-admins"
+  name = "tf-managed-eks-admins"
 }
 
 resource "aws_iam_user" "k8s-users" {
@@ -386,7 +386,7 @@ resource "aws_iam_openid_connect_provider" "example" {
 }
 
 resource "aws_iam_role" "ssm-reader" {
-  name = "ssm-reader"
+  name = "tf-managed-ssm-reader"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -403,7 +403,7 @@ resource "aws_iam_role" "ssm-reader" {
 }
 
 resource "aws_iam_role" "basic-pod-role" {
-  name = "basic-pod-role"
+  name = "tf-managed-basic-pod-role"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -441,7 +441,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch-reader-attachment" {
 }
 
 resource "aws_iam_role" "cloudwatch-reader" {
-  name = "cloudwatch-reader"
+  name = "tf-managed-cloudwatch-reader"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -458,7 +458,7 @@ resource "aws_iam_role" "cloudwatch-reader" {
 }
 
 resource "aws_iam_policy" "cloudwatch-read-policy" {
-  name = "cloudwatch-read-policy"
+  name = "tf-managed-cloudwatch-read-policy"
   policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -506,7 +506,7 @@ resource "aws_iam_policy" "cloudwatch-read-policy" {
 }
 
 resource "aws_iam_policy" "cloudwatch-writer-policy" {
-  name = "cloudwatch-writer-policy"
+  name = "tf-managed-cloudwatch-writer-policy"
   policy = jsonencode(
     {
       "Version" : "2012-10-17",
