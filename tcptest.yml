@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcp-test-deployment
+  namespace: default
+  labels:
+    app: tcp-test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tcp-test-app
+  template:
+    metadata:
+      namespace: default
+      labels:
+        app: tcp-test-app
+    spec:
+      containers:
+        - name: tcp-test
+          image: ghcr.io/observian/tcptest/tcp-tester:latest
+          env:
+            - name: PORT
+              value: "8080"
+            - name: HOST_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tcp-test-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: tcp-test-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 8080
