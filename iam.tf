@@ -409,6 +409,14 @@ resource "aws_iam_role" "basic-pod-role" {
       "Version" : "2012-10-17",
       "Statement" : [
         {
+          Sid: "",
+          Effect: "Allow",
+          Principal: {
+            Service: "ec2.amazonaws.com"
+          },
+        Action: "sts:AssumeRole"
+        },
+        {
           Effect : "Allow",
           Principal : {
             "AWS" : aws_iam_role.eks-node-group-role.arn
